@@ -1,5 +1,5 @@
 node('dind-node') {
-  withMaven(maven:'M2') {
+  withMaven() {
     stage('Checkout') {
       git url: 'https://github.com/dcommisso/sample-spring-microservices-new.git', credentialsId: 'e86cb1fc-1970-42c1-b104-7fa94ef42947', branch: 'master'
     }
@@ -14,7 +14,7 @@ node('dind-node') {
     }
     stage('Image') {
       dir ('config-service') {
-        docker.withRegistry('https://172.17.0.1:5000') {
+        docker.withRegistry('http://172.17.0.1:5000') {
           def app = docker.build "piomin/config-service:${env.version}"
           app.push()
         }
